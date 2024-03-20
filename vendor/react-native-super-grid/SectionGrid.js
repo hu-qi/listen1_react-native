@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Dimensions, ViewPropTypes, SectionList,
+  View, Dimensions, SectionList,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { generateStyles, calculateDimensions, chunkArray } from './utils';
@@ -154,8 +154,8 @@ SectionGrid.propTypes = {
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
-  style: ViewPropTypes.style,
-  itemContainerStyle: ViewPropTypes.style,
+  style: PropTypes.object,
+  itemContainerStyle: PropTypes.object,
   staticDimension: PropTypes.number,
   onLayout: PropTypes.func,
   listKey: PropTypes.string,

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import ScrollableTabView, {
   DefaultTabBar,
-} from 'react-native-scrollable-tab-view';
+} from '@appcube/react-native-scrollable-tab-view';
 
 import { connect } from 'react-redux';
 
@@ -13,6 +13,15 @@ import { search } from '../../redux/actions';
 import Client from '../../api/client';
 import { ThemeFlex } from '../../components';
 import MyPlaylistList from '../myplaylist/myplaylist-list.screen';
+
+// import { TabView, SceneMap } from 'react-native-tab-view';
+
+// const FirstRoute = () => (
+//   <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+// );
+// const SecondRoute = () => (
+//   <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+// );
 
 class PlaylistTabs extends PureComponent {
   props: {
@@ -35,11 +44,14 @@ class PlaylistTabs extends PureComponent {
   }
   handleChangeTab({ i }) {
     this.setState({ currentTab: i });
+    // console.log('i------------', i, this.props.searchState.text)
     this.props.dispatch(search(this.props.searchState.text));
   }
-  renderTabBar = props => (
-    <DefaultTabBar {...props} style={{ borderBottomWidth: 0 }} />
-  );
+  renderTabBar = props => {
+    return (
+      <DefaultTabBar {...props} style={{ borderBottomWidth: 0 }} />
+    );
+  }
   render() {
     const { text } = this.props.searchState;
 
@@ -57,6 +69,8 @@ class PlaylistTabs extends PureComponent {
           tabBarUnderlineStyle={{
             backgroundColor: this.props.theme.primaryColor,
           }}
+          onChangeTab={this.handleChangeTab}
+          ref={(scrollViewRef) => { this.scrollViewRef = scrollViewRef; }}
         >
           <MyPlaylistList
             tabLabel="我的"
@@ -86,6 +100,7 @@ class PlaylistTabs extends PureComponent {
           tabBarUnderlineStyle={{
             backgroundColor: this.props.theme.primaryColor,
           }}
+          ref={(scrollView2Ref) => { this.scrollView2Ref = scrollView2Ref; }}
         >
           {Client.getPlatformArray().map((i, index) => {
             return (

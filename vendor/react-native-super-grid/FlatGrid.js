@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  View, Dimensions, ViewPropTypes, FlatList,
+  View, Dimensions, FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { chunkArray, calculateDimensions, generateStyles } from './utils';
@@ -162,8 +162,8 @@ FlatGrid.propTypes = {
   itemDimension: PropTypes.number,
   fixed: PropTypes.bool,
   spacing: PropTypes.number,
-  style: ViewPropTypes.style,
-  itemContainerStyle: ViewPropTypes.style,
+  style: PropTypes.object,
+  itemContainerStyle: PropTypes.object,
   staticDimension: PropTypes.number,
   horizontal: PropTypes.bool,
   onLayout: PropTypes.func,

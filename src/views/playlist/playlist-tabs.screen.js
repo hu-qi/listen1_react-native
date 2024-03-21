@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import ScrollableTabView, {
-  DefaultTabBar,
+  ScrollableTabBar,
 } from '@appcube/react-native-scrollable-tab-view';
 
 import { connect } from 'react-redux';
@@ -47,11 +47,10 @@ class PlaylistTabs extends PureComponent {
     // console.log('i------------', i, this.props.searchState.text)
     this.props.dispatch(search(this.props.searchState.text));
   }
-  renderTabBar = props => {
-    return (
-      <DefaultTabBar {...props} style={{ borderBottomWidth: 0 }} />
+  renderTabBar = props => (
+      <ScrollableTabBar {...props} style={{ borderBottomWidth: 0 }} />
     );
-  }
+  
   render() {
     const { text } = this.props.searchState;
 
@@ -69,6 +68,7 @@ class PlaylistTabs extends PureComponent {
           tabBarUnderlineStyle={{
             backgroundColor: this.props.theme.primaryColor,
           }}
+          tabBarTextStyle={{fontFamily: 'Cochin', fontSize: 15}}
           onChangeTab={this.handleChangeTab}
           ref={(scrollViewRef) => { this.scrollViewRef = scrollViewRef; }}
         >

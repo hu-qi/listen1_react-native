@@ -50,7 +50,7 @@ class Playlist extends React.Component {
   constructor(props) {
     super(props);
     const { navigation, route } = this.props;
-    console.log(route.params )
+    // console.log(route.params )
     const {item} = route.params || {};
 
     if (item.info.id.startsWith('my')) {
@@ -79,6 +79,7 @@ class Playlist extends React.Component {
     }
     this.setState({ loading: true });
     LApi.getPlaylist(this.state.id).then((r) => {
+      console.log(r)
       if (this.state.info.cover_img_url !== undefined) {
         this.setState({ tracks: r.tracks, loading: false });
       } else {

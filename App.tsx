@@ -32,6 +32,15 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Routes from './Routes';
 import reducer from './src/redux/reducer';
 
+import * as Sentry from "@sentry/react-native";
+
+Sentry.init({
+  dsn: "https://66c0c4b8eeef805f7ac9f660c4d223ca@o199063.ingest.us.sentry.io/4506953342320640",
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+});
+
 // TODO: timeout setting not working in debug mode
 const persistConfig = {
   key: 'root',
@@ -76,4 +85,4 @@ function App(): React.JSX.Element {
 
 }
 
-export default App;
+export default Sentry.wrap(App);

@@ -79,7 +79,7 @@ class Playlist extends React.Component {
     }
     this.setState({ loading: true });
     LApi.getPlaylist(this.state.id).then((r) => {
-      console.log(r)
+      // console.log(r)
       if (this.state.info.cover_img_url !== undefined) {
         this.setState({ tracks: r.tracks, loading: false });
       } else {

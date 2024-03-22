@@ -40,9 +40,11 @@ async function requestAPI(url, data, refreshToken = false) {
       referer: 'https://www.kuwo.cn/',
       csrf: token,
       Cookie: 'kw_token=' + token,
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36"
     },
   })
     .then((response) => {
+      console.log('response', response);
       return response.json();
     })
     .then((response) => {
@@ -251,7 +253,7 @@ async function getToken(refresh) {
   const token_url = 'https://www.kuwo.cn/';
   const response = await fetch(token_url);
   const setCookieField = response.headers.get('set-cookie');
-  console.log(response.headers.get('set-cookie'));
+  // console.log(response.headers.get('set-cookie'));
   const token = getCookieValue(setCookieField, 'kw_token');
   await MyStorage.setData(kgKey, JSON.stringify(token));
   return token;
@@ -269,27 +271,29 @@ function getCookieValue(cookie, key) {
 }
 
 async function search(keyword, curpage) {
-  const target_url = `https://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key=${keyword}&pn=${curpage}&rn=30`;
+  // const target_url = `https://www.kuwo.cn/api/www/search/searchMusicBykeyWord?key=${keyword}&pn=${curpage}&rn=30`;
+  const target_url = `https://www.kuwo.cn/search/searchMusicBykeyWord?all=${keyword}&pn=${curpage}&rn=30&vipver=1&client=kt&ft=music&cluster=0&strategy=2012&encoding=utf8&rformat=json&mobi=1&issubtitle=1&show_copyright_off=1`;
 
   return requestAPI(target_url).then((data) => {
-    let tracks = data.data.list.map((item) => {
-      const musicrid = item.musicrid.split('_')[1];
+    // console.log('data', data.abslist[0]);
+    let tracks = data.abslist.map((item) => {
+      const musicrid = item.DC_TARGETID;
       const track = {
         id: `kwtrack_${musicrid}`,
-        title: html_decode(item.name),
-        artist: item.artist,
-        artist_id: `kwartist_${item.artistid}`,
-        album: html_decode(item.album),
-        album_id: `kwalbum_${item.albumid}`,
+        title: html_decode(item.NAME),
+        artist: item.ARTIST,
+        artist_id: `kwartist_${item.ARTISTID}`,
+        album: html_decode(item.ALBUM),
+        album_id: `kwalbum_${item.ALBUMID}`,
         source: 'kuwo',
         source_url: `http://www.kuwo.cn/yinyue/${musicrid}`,
-        img_url: item.albumpic,
+        img_url: item.web_artistpic_short? `https://img1.kuwo.cn/star/starheads/${item.web_artistpic_short}` : `https://img2.kuwo.cn/star/albumcover/${item.web_albumpic_short}`,
         url: `xmtrack_${musicrid}`,
         lyric_url: musicrid,
       };
       return track;
     });
-    return { result: tracks, total: data.data.total };
+    return { result: tracks, total: data.abslist.length };
   });
 }
 

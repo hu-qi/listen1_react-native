@@ -1,22 +1,8 @@
 import queryString from 'query-string';
 import {getTokenUrl} from '../../utils/kugouUtils';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import jsdom from 'jsdom-jscore-rn';
-
 import axios from 'axios';
-// const jsdom = require("jsdom");
-// const { JSDOM } = jsdom;
-
-const formatTime = seconds => {
-  seconds = Math.floor(seconds);
-  let min = Math.floor(seconds / 60);
-  let sec = seconds % 60;
-  let mins = ('0' + min).slice(-2);
-  let secs = ('0' + sec).slice(-2);
-  return `${mins}:${secs}`;
-};
-const CHL = 2;
 
 class MyStorage {
   static setData = async (key, value) => {
@@ -192,7 +178,6 @@ function convert(allowAll) {
 function getPlaylist(playlistId) {
   const listId = playlistId.split('_')[0];
   const d = playlistId.split('_').pop();
-  console.log(listId);
   switch (listId) {
     case 'kgplaylist':
       return kg_get_playlist(d);

@@ -14,6 +14,7 @@ function requestAPI(url, data) {
     body: queryString.stringify(weapi(data)),
   })
     .then((response) => {
+      // console.log(response)
       return response.json();
     })
     .catch(() => {
@@ -172,7 +173,7 @@ function bootstrapTrack(trackId) {
 function search(keyword, page) {
   const url = 'https://music.163.com/weapi/cloudsearch/get/web';
   const data = {
-    csrf_token: '',
+    csrf_token: '15e98867801b1eed30913907b2b441a2',
     hlposttag: '</span>',
     hlpretag: '<span class="s-fc7">',
     limit: '30',
@@ -181,14 +182,22 @@ function search(keyword, page) {
     total: 'false',
     type: '1',
   };
+  // console.log(url, data)
 
   return requestAPI(url, data).then((resData) => {
+    console.log(resData)
     const tracks = resData.result.songs.map(convert(false));
 
     return {
       result: tracks,
       total: resData.result.songCount,
     };
+  }).catch((error) => {
+    console.error(error);
+    return {
+      result: {},
+      total: 0,
+    }
   });
 }
 

@@ -95,6 +95,7 @@ class PlaylistTabs extends PureComponent {
           tabBarActiveTextColor={this.props.theme.primaryColor}
           tabBarInactiveTextColor={this.props.theme.inactiveColor}
           style={text === '' ? { display: 'none' } : {}}
+          tabBarTextStyle={{fontFamily: 'Cochin', fontSize: 15}}
           onChangeTab={this.handleChangeTab}
           renderTabBar={this.renderTabBar}
           tabBarUnderlineStyle={{

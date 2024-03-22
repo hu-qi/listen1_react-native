@@ -88,7 +88,7 @@ class MiniPlayer extends React.Component {
               source={
                 noTrack
                   ? require('../../assets/images/logo.png')
-                  : { uri: this.props.playerState.nowplayingTrack.img_url }
+                  : (this.props.playerState.nowplayingTrack.img_url?{ uri: this.props.playerState.nowplayingTrack.img_url }: require('../../assets/images/logo.png'))
               }
             />
             <SongInfo>

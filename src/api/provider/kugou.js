@@ -470,7 +470,11 @@ function kg_render_search_result_item(item) {
   // Add singer img
   const url = `http://www.kugou.com/yy/index.php?r=play/getdata&hash=${track.lyric_url}`;
   requestAPI(url).then(data => {
-    track.img_url = data.data.img;
+    console.log(data)
+    if(data.data && data.data.img) {
+      track.img_url = data.data.img;
+    }
+    
   });
   return track;
 }
@@ -485,7 +489,7 @@ function kg_convert_song(song) {
     album_id: `kgalbum_${song.AlbumID}`,
     source: 'kugou',
     source_url: `http://www.kugou.com/song/#hash=${song.FileHash}&album_id=${song.AlbumID}`,
-    img_url: '',
+    img_url: song.Image ? song.Image.replace('{size}', '400') : '',
     url: `kgtrack_${song.FileHash}`,
     lyric_url: song.FileHash,
   };

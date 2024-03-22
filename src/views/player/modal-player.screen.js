@@ -168,7 +168,7 @@ class ModalPlayerView extends React.Component {
 
         <ModalSongCover
           source={
-            noTrack ? './assets/images/logo.png' : nowplayingTrack.img_url
+            noTrack ? './assets/images/logo.png' : (nowplayingTrack.img_url? nowplayingTrack.img_url: './assets/images/logo.png')
           }
         />
         <PlayerInfo

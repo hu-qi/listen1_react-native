@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 
 function parseImageUrl(url) {
   if (url.startsWith('http')) {
-    return { uri: url };
+    return { uri: url.replace('http://', 'https://') };
   }
   const d = {
     './assets/images/logo.png': require('../assets/images/logo.png'),

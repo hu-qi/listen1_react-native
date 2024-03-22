@@ -5,11 +5,15 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "build": "cd android && ./gradlew assembleRelease",
+    "build:aab": "npx react-native build-android --mode=release",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
     "react-devtools": "react-devtools",
-    "debug": "npx react-native start --experimental-debugger"
+    "debug": "npx react-native start --experimental-debugger",
+    "clean:android": "cd android && ./gradlew clean && rm -rf app/build",
+    "clean:ios": "cd ios && pod deintegrate && pod clean && rm -rf ~/Library/Developer/Xcode/DerivedData/"
   },
   "dependencies": {
     "@appcube/react-native-scrollable-tab-view": "^1.1.1",

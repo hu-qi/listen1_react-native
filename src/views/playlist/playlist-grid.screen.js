@@ -87,7 +87,7 @@ class PlaylistGrid extends PureComponent {
             >
               <View style={{ height: containerStyle.width + titleHeight }}>
                 <Image
-                  source={{ uri: item.cover_img_url }}
+                  source={{ uri: item.cover_img_url.replace('http://', "https://") }}
                   style={{
                     width: containerStyle.width,
                     height: containerStyle.width,

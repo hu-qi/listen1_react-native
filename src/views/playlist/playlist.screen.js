@@ -154,7 +154,7 @@ class Playlist extends React.Component {
             return (
               <Flex>
                 <PlaylistHeader>
-                  <PlaylistHeaderCover source={info.cover_img_url || ''} />
+                  <PlaylistHeaderCover source={info.cover_img_url?.replace('http://', 'https://') || ''} />
                   <PlaylistHeaderTitle>{info.title || ''}</PlaylistHeaderTitle>
                 </PlaylistHeader>
                 {this.state.loading === true && (

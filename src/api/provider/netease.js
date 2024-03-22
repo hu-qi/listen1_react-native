@@ -1,6 +1,6 @@
 /* eslint no-bitwise: ["error", { "allow": ["&"] }] */
 import queryString from 'query-string';
-import { weapi } from '../../modules/crypto';
+import {weapi} from '../../modules/crypto';
 
 function requestAPI(url, data) {
   return fetch(url, {
@@ -13,7 +13,7 @@ function requestAPI(url, data) {
     },
     body: queryString.stringify(weapi(data)),
   })
-    .then((response) => {
+    .then(response => {
       // console.log(response)
       return response.json();
     })
@@ -39,15 +39,15 @@ function showPlaylist(offset) {
   const url = 'https://music.163.com/weapi/playlist/list';
 
   return requestAPI(url, data)
-    .then((r) => {
-      const playlists = r.playlists.map((item) => ({
+    .then(r => {
+      const playlists = r.playlists.map(item => ({
         cover_img_url: getSmallImageUrl(item.coverImgUrl),
         title: item.name,
         id: `neplaylist_${item.id}`,
-        source_url: `http://music.163.com/#/playlist?id=${item.id}`,
+        source_url: `https://music.163.com/#/playlist?id=${item.id}`,
       }));
 
-      return { result: playlists };
+      return {result: playlists};
     })
     .catch(() => {
       // console.error(error);
@@ -94,7 +94,7 @@ function isPlayable(song) {
 }
 
 function convert(allowAll) {
-  return (songInfo) => ({
+  return songInfo => ({
     id: `netrack_${songInfo.id}`,
     title: songInfo.name,
     artist: songInfo.ar[0].name,
@@ -102,7 +102,7 @@ function convert(allowAll) {
     album: songInfo.al.name,
     album_id: `nealbum_${songInfo.al.id}`,
     source: 'netease',
-    source_url: `http://music.163.com/#/song?id=${songInfo.id}`,
+    source_url: `https://music.163.com/#/song?id=${songInfo.id}`,
     img_url: songInfo.al.picUrl,
     url: `netrack_${songInfo.id}`,
     disabled: allowAll ? false : !isPlayable(songInfo),
@@ -120,35 +120,37 @@ function getPlaylist(playlistId) {
     csrf_token: '',
   };
 
-  const playlist_url = 'http://music.163.com/weapi/v3/playlist/detail';
+  const playlist_url = 'https://music.163.com/weapi/v3/playlist/detail';
   const tracks_url = 'https://music.163.com/weapi/v3/song/detail';
 
-  return requestAPI(playlist_url, data).then((resData) => {
+  return requestAPI(playlist_url, data).then(resData => {
     const info = {
       id: `neplaylist_${listId}`,
       cover_img_url: getSmallImageUrl(resData.playlist.coverImgUrl),
       title: resData.playlist.name,
-      source_url: `http://music.163.com/#/playlist?id=${listId}`,
+      source_url: `https://music.163.com/#/playlist?id=${listId}`,
     };
 
     // request all tracks to fetch song info
     // Code reference from listen1_chrome_extension
-    const track_ids = resData.playlist.trackIds.map((i) => i.id);
+    const track_ids = resData.playlist.trackIds.map(i => i.id);
     const data = {
-      c: '[' + track_ids.map((id) => '{"id":' + id + '}').join(',') + ']',
+      c: '[' + track_ids.map(id => '{"id":' + id + '}').join(',') + ']',
       ids: '[' + track_ids.join(',') + ']',
     };
 
-    return requestAPI(tracks_url, data).then((response) => {
+    return requestAPI(tracks_url, data).then(response => {
       const tracks = response.songs.map(convert(true));
-      return { info, tracks };
+      return {info, tracks};
     });
+  }).catch(() => {
+    return {info: {}, tracks: []};
   });
 }
 
 function bootstrapTrack(trackId) {
   const url =
-    'http://music.163.com/weapi/song/enhance/player/url/v1?csrf_token=';
+    'https://music.163.com/weapi/song/enhance/player/url/v1?csrf_token=';
 
   const songId = trackId.slice('netrack_'.length);
 
@@ -159,8 +161,8 @@ function bootstrapTrack(trackId) {
     csrf_token: '',
   };
 
-  return requestAPI(url, data).then((resData) => {
-    const { url: songUrl } = resData.data[0];
+  return requestAPI(url, data).then(resData => {
+    const {url: songUrl} = resData.data[0];
 
     if (songUrl === null) {
       return '';
@@ -184,21 +186,22 @@ function search(keyword, page) {
   };
   // console.log(url, data)
 
-  return requestAPI(url, data).then((resData) => {
-    console.log(resData)
-    const tracks = resData.result.songs.map(convert(false));
+  return requestAPI(url, data)
+    .then(resData => {
+      // console.log(resData);
+      const tracks = resData.result.songs.map(convert(false));
 
-    return {
-      result: tracks,
-      total: resData.result.songCount,
-    };
-  }).catch((error) => {
-    console.error(error);
-    return {
-      result: {},
-      total: 0,
-    }
-  });
+      return {
+        result: tracks,
+        total: resData.result.songCount,
+      };
+    })
+    .catch(error => {
+      return {
+        result: {},
+        total: 0,
+      };
+    });
 }
 
 function parseUrl(url) {
@@ -230,7 +233,7 @@ function parseUrl(url) {
   return result;
 }
 
-const meta = { name: '网易', platformId: 'ne', enName: 'netease' };
+const meta = {name: '网易', platformId: 'ne', enName: 'netease'};
 
 export default {
   meta,

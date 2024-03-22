@@ -44,7 +44,7 @@ async function requestAPI(url, data, refreshToken = false) {
     },
   })
     .then((response) => {
-      console.log('response', response);
+      // console.log('response', response);
       return response.json();
     })
     .then((response) => {
@@ -61,7 +61,7 @@ function getSmallImageUrl(url) {
   return `${url}?param=140y140`;
 }
 function showPlaylist(offset) {
-  const url = `http://www.kuwo.cn/www/categoryNew/getPlayListInfoUnderCategory?type=taglist&digest=10000&id=37&start=${
+  const url = `https://www.kuwo.cn/www/categoryNew/getPlayListInfoUnderCategory?type=taglist&digest=10000&id=37&start=${
     offset * 30
   }&count=30`;
 
@@ -77,7 +77,7 @@ function showPlaylist(offset) {
         cover_img_url: item.img,
         title: item.name,
         id: `kwplaylist_${item.id}`,
-        source_url: `http://www.kuwo.cn/playlist/index?pid=${item.id}`,
+        source_url: `https://www.kuwo.cn/playlist/index?pid=${item.id}`,
       }));
       return { result, hasNextPage: true };
     })
@@ -150,7 +150,7 @@ function convert(allowAll) {
     album: songInfo.al.name,
     album_id: `nealbum_${songInfo.al.id}`,
     source: 'netease',
-    source_url: `http://music.163.com/#/song?id=${songInfo.id}`,
+    source_url: `https://music.163.com/#/song?id=${songInfo.id}`,
     img_url: getSmallImageUrl(songInfo.al.picUrl),
     url: `netrack_${songInfo.id}`,
     disabled: allowAll ? false : !isPlayable(songInfo),
@@ -173,7 +173,7 @@ function getPlaylist(playlistId) {
 }
 
 async function kw_get_playlist(playlistId) {
-  const target_url = `http://nplserver.kuwo.cn/pl.svc?op=getlistinfo&pn=0&rn=200&encode=utf-8&keyset=pl2012&pcmp4=1&pid=${playlistId}&vipver=MUSIC_9.0.2.0_W1&newver=1`;
+  const target_url = `https://nplserver.kuwo.cn/pl.svc?op=getlistinfo&pn=0&rn=200&encode=utf-8&keyset=pl2012&pcmp4=1&pid=${playlistId}&vipver=MUSIC_9.0.2.0_W1&newver=1`;
 
   return await fetch(target_url)
     .then((response) => {
@@ -184,7 +184,7 @@ async function kw_get_playlist(playlistId) {
         cover_img_url: data.pic,
         title: data.title,
         id: `kwplaylist_${data.id}`,
-        source_url: `http://www.kuwo.cn/playlist/index?pid=${data.id}`,
+        source_url: `https://www.kuwo.cn/playlist/index?pid=${data.id}`,
       };
 
       const tracks = data.musiclist.map((t) =>
@@ -207,12 +207,12 @@ function kw_render_playlist_result_item(item) {
     album: html_decode(item.album),
     album_id: `kwalbum_${item.albumid}`,
     source: 'kuwo',
-    source_url: `http://www.kuwo.cn/yinyue/${item.id}`,
+    source_url: `https://www.kuwo.cn/yinyue/${item.id}`,
     img_url: '',
     url: `xmtrack_${item.id}`,
     lyric_url: item.id,
   };
-  const target_url = `http://artistpicserver.kuwo.cn/pic.web?type=rid_pic&pictype=url&size=240&rid=${item.id}`;
+  const target_url = `https://artistpicserver.kuwo.cn/pic.web?type=rid_pic&pictype=url&size=240&rid=${item.id}`;
   fetch(target_url)
     .then((response) => {
       return response.text();
@@ -227,7 +227,7 @@ function bootstrapTrack(trackId) {
   const songId = trackId.slice('kwtrack_'.length);
 
   const target_url = `${
-    'http://antiserver.kuwo.cn/anti.s?' +
+    'https://antiserver.kuwo.cn/anti.s?' +
     'type=convert_url&format=mp3&response=url&rid='
   }${songId}`;
 
@@ -286,7 +286,7 @@ async function search(keyword, curpage) {
         album: html_decode(item.ALBUM),
         album_id: `kwalbum_${item.ALBUMID}`,
         source: 'kuwo',
-        source_url: `http://www.kuwo.cn/yinyue/${musicrid}`,
+        source_url: `https://www.kuwo.cn/yinyue/${musicrid}`,
         img_url: item.web_artistpic_short? `https://img1.kuwo.cn/star/starheads/${item.web_artistpic_short}` : `https://img2.kuwo.cn/star/albumcover/${item.web_albumpic_short}`,
         url: `xmtrack_${musicrid}`,
         lyric_url: musicrid,

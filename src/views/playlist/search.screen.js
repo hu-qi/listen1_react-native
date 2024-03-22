@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, RefreshControl } from 'react-native';
+import { FlatList, RefreshControl, Text } from 'react-native';
 import { connect } from 'react-redux';
 
 import Client from '../../api/client';
@@ -146,6 +146,9 @@ class Search extends React.Component {
               refreshing={this.state.isRefreshing}
               onRefresh={this.onRefresh}
             />
+          }
+          ListEmptyComponent={
+            <Text style={{ textAlign: 'center', marginTop: "60%" }} >暂无数据</Text>
           }
         />
       </ThemeFlex>

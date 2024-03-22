@@ -21,7 +21,7 @@ function qqGetImageUrl(qqimgid, imgType) {
     qqimgid[qqimgid.length - 1],
     qqimgid,
   ].join('/');
-  const url = `http://imgcache.qq.com/music/photo/${s}.jpg`;
+  const url = `https://imgcache.qq.com/music/photo/${s}.jpg`;
 
   return url;
 }
@@ -49,7 +49,7 @@ function qqConvertSong(song) {
     album_id: `qqalbum_${song.albummid}`,
     img_url: qqGetImageUrl(song.albummid, 'album'),
     source: 'qq',
-    source_url: `http://y.qq.com/#type=song&mid=${song.songmid}&tpl=yqq_song_detail`,
+    source_url: `https://y.qq.com/#type=song&mid=${song.songmid}&tpl=yqq_song_detail`,
     url: `qqtrack_${song.songmid}`,
     disabled: !qqIsPlayable(song),
   };
@@ -72,7 +72,7 @@ function showPlaylist(offset) {
         cover_img_url: item.imgurl,
         title: item.dissname,
         id: `qqplaylist_${item.dissid}`,
-        source_url: `http://y.qq.com/#type=taoge&id=${item.dissid}`,
+        source_url: `https://y.qq.com/#type=taoge&id=${item.dissid}`,
       }));
 
       return { result: playlists };
@@ -84,7 +84,7 @@ function showPlaylist(offset) {
 
 function search(keyword, page) {
   const url =
-    `${'http://i.y.qq.com/s.music/fcgi-bin/search_for_qq_cp?' +
+    `${'https://i.y.qq.com/s.music/fcgi-bin/search_for_qq_cp?' +
       'g_tk=938407465&uin=0&format=jsonp&inCharset=utf-8' +
       '&outCharset=utf-8&notice=0&platform=h5&needNewCode=1' +
       '&w='}${keyword}&zhidaqu=1&catZhida=1` +
@@ -107,13 +107,14 @@ function search(keyword, page) {
     })
     .catch(() => {
       // console.error(error);
+      return { result: [] , total: 0 };
     });
 }
 
 function getPlaylist(playlistId) {
   const listId = playlistId.split('_').pop();
   const targetUrl =
-    `${'http://i.y.qq.com/qzone-music/fcg-bin/fcg_ucc_getcdinfo_' +
+    `${'https://i.y.qq.com/qzone-music/fcg-bin/fcg_ucc_getcdinfo_' +
       'byids_cp.fcg?type=1&json=1&utf8=1&onlysong=0&jsonpCallback=' +
       'jsonCallback&nosign=1&disstid='}${listId}&g_tk=5381&loginUin=0&hostUin=0` +
     '&format=jsonp&inCharset=GB2312&outCharset=utf-8&notice=0' +
@@ -134,7 +135,7 @@ function getPlaylist(playlistId) {
         cover_img_url: jsonData.cdlist[0].logo,
         title: jsonData.cdlist[0].dissname,
         id: `qqplaylist_${listId}`,
-        source_url: `http://y.qq.com/#type=taoge&id=${listId}`,
+        source_url: `https://y.qq.com/#type=taoge&id=${listId}`,
       };
 
       const tracks = jsonData.cdlist[0].songlist.map(item =>
